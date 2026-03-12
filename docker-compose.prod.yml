@@ -1,0 +1,44 @@
+version: "3.9"
+
+# Production deployment for EC2
+# - arivu-backend: FastAPI on port 8001 (internal only)
+# - arivu-admin:   React + Nginx on port 80 (public)
+# - redis:         Cache/session store
+# DB is AWS RDS — no local postgres needed
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: arivu-redis
+    restart: unless-stopped
+    networks:
+      - arivu-net
+
+  arivu-backend:
+    build:
+      context: ./arivu-backend
+    container_name: arivu-backend
+    restart: unless-stopped
+    env_file:
+      - ./arivu-backend/.env.prod
+    networks:
+      - arivu-net
+    depends_on:
+      - redis
+    # Do NOT expose port 8001 publicly — Nginx proxies to it internally
+
+  arivu-admin:
+    build:
+      context: ./arivu-admin
+    container_name: arivu-admin
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    networks:
+      - arivu-net
+    depends_on:
+      - arivu-backend
+
+networks:
+  arivu-net:
+    driver: bridge

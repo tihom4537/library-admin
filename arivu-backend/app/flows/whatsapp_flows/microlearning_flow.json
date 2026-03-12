@@ -1,0 +1,193 @@
+{
+  "version": "3.1",
+  "screens": [
+    {
+      "id": "STEP_ONE",
+      "title": "Weekly Learning",
+      "data": {
+        "module_title":     { "type": "string", "__example__": "Opening Shikshanapedia" },
+        "step_one_heading": { "type": "string", "__example__": "Step 1: Find the icon" },
+        "step_one_text":    { "type": "string", "__example__": "Look for the Shikshanapedia icon on the desktop" },
+        "flow_token":       { "type": "string", "__example__": "tok_abc123" },
+        "module_id":        { "type": "string", "__example__": "mod_001" },
+        "step_two_heading": { "type": "string", "__example__": "Step 2: Open it" },
+        "step_two_text":    { "type": "string", "__example__": "Double-click on the icon and wait 10 seconds" },
+        "step_three_heading": { "type": "string", "__example__": "Step 3: Home page" },
+        "step_three_text":    { "type": "string", "__example__": "This page will appear — Shikshanapedia is open!" },
+        "practice_prompt":  { "type": "string", "__example__": "Now try it yourself! Tell me when you are done." }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "${data.module_title}"
+          },
+          {
+            "type": "TextCaption",
+            "text": "📖 Step 1 of 3"
+          },
+          {
+            "type": "TextSubheading",
+            "text": "${data.step_one_heading}"
+          },
+          {
+            "type": "TextBody",
+            "text": "${data.step_one_text}"
+          },
+          {
+            "type": "Footer",
+            "label": "Next →",
+            "on-click-action": {
+              "name": "navigate",
+              "next": { "type": "screen", "name": "STEP_TWO" },
+              "payload": {
+                "flow_token":       "${data.flow_token}",
+                "module_id":        "${data.module_id}",
+                "step_two_heading": "${data.step_two_heading}",
+                "step_two_text":    "${data.step_two_text}",
+                "step_three_heading": "${data.step_three_heading}",
+                "step_three_text":    "${data.step_three_text}",
+                "practice_prompt":  "${data.practice_prompt}"
+              }
+            }
+          }
+        ]
+      }
+    },
+
+    {
+      "id": "STEP_TWO",
+      "title": "Weekly Learning",
+      "data": {
+        "flow_token":         { "type": "string", "__example__": "tok_abc123" },
+        "module_id":          { "type": "string", "__example__": "mod_001" },
+        "step_two_heading":   { "type": "string", "__example__": "Step 2: Open it" },
+        "step_two_text":      { "type": "string", "__example__": "Double-click on the icon and wait 10 seconds" },
+        "step_three_heading": { "type": "string", "__example__": "Step 3: Home page" },
+        "step_three_text":    { "type": "string", "__example__": "This page will appear — Shikshanapedia is open!" },
+        "practice_prompt":    { "type": "string", "__example__": "Now try it yourself! Tell me when you are done." }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextCaption",
+            "text": "📖 Step 2 of 3"
+          },
+          {
+            "type": "TextSubheading",
+            "text": "${data.step_two_heading}"
+          },
+          {
+            "type": "TextBody",
+            "text": "${data.step_two_text}"
+          },
+          {
+            "type": "Footer",
+            "label": "Next →",
+            "on-click-action": {
+              "name": "navigate",
+              "next": { "type": "screen", "name": "STEP_THREE" },
+              "payload": {
+                "flow_token":         "${data.flow_token}",
+                "module_id":          "${data.module_id}",
+                "step_three_heading": "${data.step_three_heading}",
+                "step_three_text":    "${data.step_three_text}",
+                "practice_prompt":    "${data.practice_prompt}"
+              }
+            }
+          }
+        ]
+      }
+    },
+
+    {
+      "id": "STEP_THREE",
+      "title": "Weekly Learning",
+      "data": {
+        "flow_token":         { "type": "string", "__example__": "tok_abc123" },
+        "module_id":          { "type": "string", "__example__": "mod_001" },
+        "step_three_heading": { "type": "string", "__example__": "Step 3: Home page" },
+        "step_three_text":    { "type": "string", "__example__": "This page will appear — Shikshanapedia is open!" },
+        "practice_prompt":    { "type": "string", "__example__": "Now try it yourself! Tell me when you are done." }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextCaption",
+            "text": "📖 Step 3 of 3"
+          },
+          {
+            "type": "TextSubheading",
+            "text": "${data.step_three_heading}"
+          },
+          {
+            "type": "TextBody",
+            "text": "${data.step_three_text}"
+          },
+          {
+            "type": "Footer",
+            "label": "Try it! →",
+            "on-click-action": {
+              "name": "navigate",
+              "next": { "type": "screen", "name": "PRACTICE" },
+              "payload": {
+                "flow_token":      "${data.flow_token}",
+                "module_id":       "${data.module_id}",
+                "practice_prompt": "${data.practice_prompt}"
+              }
+            }
+          }
+        ]
+      }
+    },
+
+    {
+      "id": "PRACTICE",
+      "title": "Practice Time!",
+      "terminal": true,
+      "data": {
+        "flow_token":      { "type": "string", "__example__": "tok_abc123" },
+        "module_id":       { "type": "string", "__example__": "mod_001" },
+        "practice_prompt": { "type": "string", "__example__": "Now try it yourself! Tell me when you are done." }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "Practice Time! 💪"
+          },
+          {
+            "type": "TextBody",
+            "text": "${data.practice_prompt}"
+          },
+          {
+            "type": "RadioButtonsGroup",
+            "name": "outcome",
+            "label": "How did it go?",
+            "required": true,
+            "data-source": [
+              { "id": "done",    "title": "✅ Done! It worked!" },
+              { "id": "problem", "title": "❓ I faced a problem" }
+            ]
+          },
+          {
+            "type": "Footer",
+            "label": "Submit",
+            "on-click-action": {
+              "name": "complete",
+              "payload": {
+                "outcome":     "${form.outcome}",
+                "flow_token":  "${data.flow_token}",
+                "module_id":   "${data.module_id}"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

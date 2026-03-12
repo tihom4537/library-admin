@@ -1,0 +1,95 @@
+{
+  "version": "3.1",
+  "screens": [
+    {
+      "id": "ACTIVITY_REPORT",
+      "title": "Activity Details",
+      "data": {
+        "activities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "title": { "type": "string" }
+            }
+          },
+          "__example__": [
+            { "id": "act_001", "title": "⭐ Reading Hour (mandatory)" },
+            { "id": "act_002", "title": "Story Circle" },
+            { "id": "act_003", "title": "Drawing Competition" }
+          ]
+        },
+        "flow_token": {
+          "type": "string",
+          "__example__": "tok_abc123"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "Activity Details"
+          },
+          {
+            "type": "TextBody",
+            "text": "Fill in the details for the activity you just conducted."
+          },
+          {
+            "type": "Dropdown",
+            "name": "activity_id",
+            "label": "Activity",
+            "required": true,
+            "data-source": "${data.activities}"
+          },
+          {
+            "type": "RadioButtonsGroup",
+            "name": "children_count",
+            "label": "Number of children",
+            "required": true,
+            "data-source": [
+              { "id": "lt10",          "title": "Less than 10" },
+              { "id": "ten_twenty",    "title": "10 – 20" },
+              { "id": "twenty_thirty", "title": "20 – 30" },
+              { "id": "gt30",          "title": "30+" }
+            ]
+          },
+          {
+            "type": "RadioButtonsGroup",
+            "name": "feedback",
+            "label": "How did it go?",
+            "required": true,
+            "data-source": [
+              { "id": "went_well",         "title": "✅ Well" },
+              { "id": "needs_improvement", "title": "🔄 Could be better" },
+              { "id": "difficult",         "title": "❌ Difficult" }
+            ]
+          },
+          {
+            "type": "TextInput",
+            "name": "optional_note",
+            "label": "Anything to add? (Optional)",
+            "input-type": "text",
+            "required": false,
+            "helper-text": "Share any observation or challenge from today"
+          },
+          {
+            "type": "Footer",
+            "label": "Submit",
+            "on-click-action": {
+              "name": "complete",
+              "payload": {
+                "activity_id":    "${form.activity_id}",
+                "children_count": "${form.children_count}",
+                "feedback":       "${form.feedback}",
+                "optional_note":  "${form.optional_note}",
+                "flow_token":     "${data.flow_token}"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+  arivu-backend:
+    build: .
+    container_name: arivu-backend
+    ports:
+      - "8001:8001"
+    env_file:
+      - .env
+    environment:
+      # Use Whatomate's Redis container (reachable via shared whatomate-net network)
+      REDIS_URL: redis://redis:6379/0
+      # Whatomate app service (reachable via shared whatomate-net Docker network)
+      WHATOMATE_BASE_URL: http://app:8080
+    depends_on:
+      arivu-db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - arivu-net
+      - whatomate-net
+
+  arivu-db:
+    image: postgres:16-alpine
+    container_name: arivu-db
+    environment:
+      POSTGRES_USER: arivu
+      POSTGRES_PASSWORD: arivu123
+      POSTGRES_DB: arivu
+    ports:
+      - "5433:5432"   # 5433 to avoid conflict with Whatomate's postgres on 5432
+    volumes:
+      - arivu-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U arivu -d arivu"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - arivu-net
+
+  # Redis is shared with Whatomate — only start this if Whatomate is NOT already running Redis
+  # Comment out if using Whatomate's Redis
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: arivu-redis
+  #   ports:
+  #     - "6379:6379"
+  #   networks:
+  #     - arivu-net
+
+volumes:
+  arivu-db-data:
+
+networks:
+  arivu-net:
+    driver: bridge
+  whatomate-net:
+    external: true
+    name: tihom4537_whatomate   # Whatomate's actual Docker network name

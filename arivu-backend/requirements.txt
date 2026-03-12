@@ -1,0 +1,21 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+sqlalchemy[asyncio]==2.0.36
+asyncpg==0.29.0
+alembic==1.14.0
+redis==5.2.0
+httpx==0.27.0
+python-dotenv==1.0.1
+pydantic[email]==2.9.2
+pydantic-settings==2.6.1
+python-multipart==0.0.12
+apscheduler==3.10.4
+# Admin portal — auth
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+# Admin portal — AI (Gemini)
+google-genai>=1.0.0
+# Admin portal — file storage (AWS S3)
+boto3==1.35.36
+# Admin portal — CSV export + analytics
+pandas==2.2.3

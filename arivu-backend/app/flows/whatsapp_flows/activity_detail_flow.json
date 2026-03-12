@@ -1,0 +1,103 @@
+{
+  "version": "3.1",
+  "screens": [
+    {
+      "id": "ACTIVITY_DETAIL",
+      "title": "Activity Details",
+      "data": {
+        "activity_title": {
+          "type": "string",
+          "__example__": "Reading Hour"
+        },
+        "duration": {
+          "type": "string",
+          "__example__": "30 min"
+        },
+        "age_group": {
+          "type": "string",
+          "__example__": "All ages"
+        },
+        "materials": {
+          "type": "string",
+          "__example__": "Books only"
+        },
+        "step_one": {
+          "type": "string",
+          "__example__": "Seat children in a circle"
+        },
+        "step_two": {
+          "type": "string",
+          "__example__": "Give each child a book"
+        },
+        "step_three": {
+          "type": "string",
+          "__example__": "Tell them to read for 20 minutes"
+        },
+        "step_four": {
+          "type": "string",
+          "__example__": "Ask 2-3 children to share what they read"
+        },
+        "tip": {
+          "type": "string",
+          "__example__": "For younger children, give picture books"
+        },
+        "flow_token": {
+          "type": "string",
+          "__example__": "tok_abc123"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "${data.activity_title}"
+          },
+          {
+            "type": "TextCaption",
+            "text": "⏱ ${data.duration}  |  👶 ${data.age_group}  |  📦 ${data.materials}"
+          },
+          {
+            "type": "TextSubheading",
+            "text": "── Steps ──"
+          },
+          {
+            "type": "TextBody",
+            "text": "1️⃣ ${data.step_one}\n\n2️⃣ ${data.step_two}\n\n3️⃣ ${data.step_three}\n\n4️⃣ ${data.step_four}"
+          },
+          {
+            "type": "TextCaption",
+            "text": "💡 Tip: ${data.tip}"
+          },
+          {
+            "type": "RadioButtonsGroup",
+            "name": "decision",
+            "label": "What would you like to do?",
+            "required": true,
+            "data-source": [
+              {
+                "id": "will_do",
+                "title": "✅ I will do this activity"
+              },
+              {
+                "id": "other",
+                "title": "❌ Show me another activity"
+              }
+            ]
+          },
+          {
+            "type": "Footer",
+            "label": "Submit",
+            "on-click-action": {
+              "name": "complete",
+              "payload": {
+                "decision": "${form.decision}",
+                "flow_token": "${data.flow_token}"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
