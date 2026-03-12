@@ -10,8 +10,8 @@ import logging
 from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, status
+import bcrypt
 from jose import jwt
-from passlib.context import CryptContext
 from pydantic import BaseModel, EmailStr
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -24,7 +24,11 @@ from app.models.admin import AdminUser
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/auth", tags=["admin-auth"])
 
-_pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+def _verify_password(plain: str, hashed: str) -> bool:
+    return bcrypt.checkpw(plain.encode(), hashed.encode())
+
+def _hash_password(plain: str) -> str:
+    return bcrypt.hashpw(plain.encode(), bcrypt.gensalt()).decode()
 
 
 # ─── Schemas ──────────────────────────────────────────────────────────────────
@@ -101,7 +105,7 @@ async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)):
     )
     admin = result.scalar_one_or_none()
 
-    if admin is None or not _pwd_context.verify(body.password, admin.password_hash):
+    if admin is None or not _verify_password(body.password, admin.password_hash):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
@@ -192,7 +196,7 @@ async def create_first_admin(body: CreateAdminRequest, db: AsyncSession = Depend
 
     admin = AdminUser(
         email=body.email,
-        password_hash=_pwd_context.hash(body.password),
+        password_hash=_hash_password(body.password),
         name=body.name,
         role=body.role,
     )

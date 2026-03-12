@@ -12,7 +12,6 @@ python-multipart==0.0.12
 apscheduler==3.10.4
 # Admin portal — auth
 python-jose[cryptography]==3.3.0
-passlib[bcrypt]==1.7.4
 bcrypt==4.0.1
 # Admin portal — AI (Gemini)
 google-genai>=1.0.0
